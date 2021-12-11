@@ -1,0 +1,12 @@
+body {
+    font: 14px "Century Gothic", Futura, sans-serif;
+  }
+  
+.power-container{
+  position:absolute;
+  left: 45px;
+}
+
+.power_chart{
+  margin: 0px;
+}
