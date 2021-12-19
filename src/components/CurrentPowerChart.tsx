@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { CategoryScale, Chart as ChartJS, Legend, LinearScale, LineElement, PointElement, Title, Tooltip } from 'chart.js';
-import { GetArchiveData } from "model/GetArchiveData";
+import { SolarData } from 'model/SolarData';
 import React, { useEffect, useRef, useState } from "react";
 import { Line } from 'react-chartjs-2';
-import GetArchiveDataMapper from "../mapper/GetArchiveDataMapper";
+import DataToChartMapper from "../mapper/DataToChartMapper";
 
 ChartJS.register(CategoryScale,LinearScale,PointElement,LineElement,Title,Tooltip,Legend);
   
@@ -34,7 +34,7 @@ const CurrentPowerChart = () => {
       labels: [],
       datasets: [
         {
-          label: 'Power',
+          label: 'Power Generated',
           data: [],
           borderColor: 'rgb(255, 99, 132)',
           backgroundColor: 'rgba(255, 99, 132, 0.5)',
@@ -62,17 +62,16 @@ const CurrentPowerChart = () => {
       ],
   });
     const intervl = useRef(null);
-    const today : String = new Date().toLocaleString(undefined, {year: 'numeric', month: 'numeric', day: 'numeric' }).replaceAll("/",".");
 
     const updateChart = ()=>{
       axios
-      .get<GetArchiveData>("http://localhost:4200/solar_api/v1/GetArchiveData.cgi?Scope=System&StartDate=" + today + "&EndDate=" + today + "&Channel=PowerReal_PAC_Sum&Channel=TimeSpanInSec&Channel=EnergyReal_WAC_Plus_Absolute&Channel=EnergyReal_WAC_Minus_Absolute", {
+      .get<SolarData[]>("http://localhost:4200/solar_data/?start=" + new Date().getTime(), {
         headers: {
           "Content-Type": "application/json"
         },
       })
       .then(response => {
-          setChartData(GetArchiveDataMapper.arrToTodayData(response.data));
+          setChartData(DataToChartMapper.arrToTodayData(response.data));
       })
       ;
     };
