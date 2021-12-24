@@ -76,7 +76,7 @@ const CurrentPowerChart = () => {
 
     const updateChart = ()=>{
       axios
-      .get<SolarData[]>("http://localhost:4200/solar_data/?start=" + startDate.getTime() + "&end=" + endDate.getTime(), {
+      .get<SolarData[]>("/solar_data/?start=" + startDate.getTime() + "&end=" + endDate.getTime(), {
         headers: {
           "Content-Type": "application/json"
         },

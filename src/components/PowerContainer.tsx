@@ -10,7 +10,7 @@ const PowerContainer = ({initialVal}) => {
 
     const updateData = () => {
 
-        axios.get<SolarData>("http://localhost:4200/solar_data/current", {
+        axios.get<SolarData>("/solar_data/current", {
             headers: {
             "Content-Type": "application/json"
             },
