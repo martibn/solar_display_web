@@ -30,42 +30,53 @@ export const options = {
 };
 
 const CurrentPowerChart = () => {
-    const [chartData, setChartData] = useState<any>({
-      labels: [],
-      datasets: [
-        {
-          label: 'Power Generated',
-          data: [],
-          borderColor: 'rgb(255, 99, 132)',
-          backgroundColor: 'rgba(255, 99, 132, 0.5)',
-        },
-        {
-          label: 'Power Consumed',
-          data: [],
-          borderColor: 'rgb(99, 99, 255)',
-          backgroundColor: 'rgba(99, 99, 255, 0.5)',
-        },
-        {
-          label: 'Grid Consumed',
-          data: [],
-          borderColor: 'rgb(255, 155, 0)',
-          backgroundColor: 'rgba(255, 155, 0, 0.5)',
-          hidden: true
-        },
-        {
-          label: 'Grid Injected',
-          data: [],
-          borderColor: 'rgb(99, 255, 99)',
-          backgroundColor: 'rgba(99, 255, 99, 0.5)',
-          hidden: true
-        }
-      ],
-  });
+      const [chartData, setChartData] = useState<any>({
+        labels: [],
+        datasets: [
+          {
+            label: 'Power Generated',
+            data: [],
+            borderColor: 'rgb(255, 99, 132)',
+            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+          },
+          {
+            label: 'Power Consumed',
+            data: [],
+            borderColor: 'rgb(99, 99, 255)',
+            backgroundColor: 'rgba(99, 99, 255, 0.5)',
+          },
+          {
+            label: 'Grid Consumed',
+            data: [],
+            borderColor: 'rgb(255, 155, 0)',
+            backgroundColor: 'rgba(255, 155, 0, 0.5)',
+            hidden: true
+          },
+          {
+            label: 'Grid Injected',
+            data: [],
+            borderColor: 'rgb(99, 255, 99)',
+            backgroundColor: 'rgba(99, 255, 99, 0.5)',
+            hidden: true
+          }
+        ],
+    });
     const intervl = useRef(null);
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
+
+    useEffect(() => {
+      updateChart();
+      intervl.current = setInterval(() => {
+        updateChart();
+      }, 300000);
+
+      return () => clearInterval(intervl.current);
+    }, [startDate,endDate]);
 
     const updateChart = ()=>{
       axios
-      .get<SolarData[]>("http://localhost:4200/solar_data/?start=" + new Date().getTime(), {
+      .get<SolarData[]>("http://localhost:4200/solar_data/?start=" + startDate.getTime() + "&end=" + endDate.getTime(), {
         headers: {
           "Content-Type": "application/json"
         },
@@ -76,17 +87,40 @@ const CurrentPowerChart = () => {
       ;
     };
 
-    useEffect(() => {
-        updateChart();
-        intervl.current = setInterval(() => {
-          updateChart();
-        }, 300000);
+    const onChangeStartDate = (newDate: Date) => {
+      setStartDate(newDate);
 
-        return () => clearInterval(intervl.current);
-    }, []);
-    
+      if(newDate.getTime() > endDate.getTime()){
+        setEndDate(newDate);
+      }
+    };
+
+    const onChangeEndDate = (newDate: Date) => {
+      setEndDate(newDate);
+
+      if(newDate.getTime() < startDate.getTime()){
+        setStartDate(newDate);
+      }
+    };
+
     return(
     <div className="power_chart">
+      <div className="dateContainer">
+        <span className="startDateRangeContainer">
+          Start Date: <input  type="date" 
+                              className="startDateRange" 
+                              value={startDate.toISOString().substring(0,10)}
+                              onChange={(ev) => {onChangeStartDate(new Date(ev.target.value))}}
+                              />
+        </span>
+        <span className="endDateRangeContainer">
+          End Date: <input  type="date" 
+                              className="endDateRange" 
+                              value={endDate.toISOString().substring(0,10)}
+                              onChange={(ev) => {onChangeEndDate(new Date(ev.target.value))}}
+                              />
+        </span>
+      </div>
       <Line options={options} data={chartData} />
     </div>);
 };

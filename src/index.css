@@ -10,3 +10,12 @@ body {
 .power_chart{
   margin: 0px;
 }
+
+.dateContainer{
+  position:absolute;
+  right: 10px;
+}
+
+.endDateRangeContainer{
+  margin-left: 5px;
+}
