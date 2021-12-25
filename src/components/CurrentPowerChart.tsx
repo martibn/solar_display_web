@@ -38,18 +38,21 @@ const CurrentPowerChart = () => {
             data: [],
             borderColor: 'rgb(255, 99, 132)',
             backgroundColor: 'rgba(255, 99, 132, 0.5)',
+            pointRadius: 0,
           },
           {
             label: 'Power Consumed',
             data: [],
             borderColor: 'rgb(99, 99, 255)',
             backgroundColor: 'rgba(99, 99, 255, 0.5)',
+            pointRadius: 0,
           },
           {
             label: 'Grid Consumed',
             data: [],
             borderColor: 'rgb(255, 155, 0)',
             backgroundColor: 'rgba(255, 155, 0, 0.5)',
+            pointRadius: 0,
             hidden: true
           },
           {
@@ -57,6 +60,7 @@ const CurrentPowerChart = () => {
             data: [],
             borderColor: 'rgb(99, 255, 99)',
             backgroundColor: 'rgba(99, 255, 99, 0.5)',
+            pointRadius: 0,
             hidden: true
           }
         ],
