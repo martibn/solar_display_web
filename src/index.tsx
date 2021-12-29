@@ -1,5 +1,5 @@
 import PowerContainer from "./components/PowerContainer";
-import CurrentPowerChart from "./components/CurrentPowerChart";
+import PowerChart from "./components/PowerChart";
 import * as React from "react";
 import ReactDOM from 'react-dom';
 
@@ -12,7 +12,7 @@ ReactDOM.render(
   <div>
     <PowerContainer initialVal = "Loading..." />
 
-    <CurrentPowerChart />
+    <PowerChart />
   </div>,
   document.querySelector("root")
 );

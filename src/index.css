@@ -19,3 +19,7 @@ body {
 .endDateRangeContainer{
   margin-left: 5px;
 }
+
+.chartPeriodRange{
+  display:block;
+}

@@ -45,7 +45,7 @@ const PowerContainer = ({initialVal}) => {
         <div hidden={solarData.grid_injection===0}>
             Grid injection: {solarData.grid_injection + " W"}
         </div>
-        <div hidden={solarData.grid_injection===0}>
+        <div>
             Last Request: {new Date(solarData.timestamp).toLocaleString()}
         </div>
     </div>);
