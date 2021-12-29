@@ -27,6 +27,14 @@ export const defaultOptions = {
           intersect: false
         }
     },
+    scales: {
+      xAxes: [{
+        stacked: true
+      }],
+      yAxes: [{
+        stacked: true,
+      }]
+    }
     
 };
 
@@ -39,6 +47,7 @@ export const defaultChartData: TodayData = {
       borderColor: 'rgb(255, 99, 132)',
       backgroundColor: 'rgba(255, 99, 132, 0.5)',
       pointRadius: 0,
+      stack: 'a'
     },
     {
       label: 'Power Consumed',
@@ -46,6 +55,7 @@ export const defaultChartData: TodayData = {
       borderColor: 'rgb(99, 99, 255)',
       backgroundColor: 'rgba(99, 99, 255, 0.5)',
       pointRadius: 0,
+      stack: 'a'
     },
     {
       label: 'Grid Consumed',
@@ -53,7 +63,8 @@ export const defaultChartData: TodayData = {
       borderColor: 'rgb(255, 155, 0)',
       backgroundColor: 'rgba(255, 155, 0, 0.5)',
       pointRadius: 0,
-      hidden: true
+      hidden: true,
+      stack: 'b'
     },
     {
       label: 'Grid Injected',
@@ -61,40 +72,30 @@ export const defaultChartData: TodayData = {
       borderColor: 'rgb(99, 255, 99)',
       backgroundColor: 'rgba(99, 255, 99, 0.5)',
       pointRadius: 0,
-      hidden: true
+      hidden: true,
+      stack: 'b'
     }
   ],
 }
 
-const ChartContainer = ({options, data, type}) => {
-  ChartJS.register(CategoryScale,LinearScale,PointElement,LineElement,Title,Tooltip,Legend, BarElement, BarController);
-
-  const chartRef = useRef<any>();
-
-
-  useEffect(() =>{
-    chartRef.current.config.type = type;
-  },[type]);
-
-  return (
-    <>  
-      <Chart ref={chartRef} options={options} data={data} type={type as any} />
-    </>
-  );
-};
-
 const PowerChart = () => {
-      const [chartData, setChartData] = useState<any>(defaultChartData);
+    ChartJS.register(CategoryScale,LinearScale,PointElement,LineElement,Title,Tooltip,Legend, BarElement, BarController);
+    
+    const [chartData, setChartData] = useState<any>(defaultChartData);
 
     const intervl = useRef(null);
+    const chartRef = useRef<any>();
+
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
     const [periodicity, setPeriodicity] = useState("hour");
-
     const [inputDateType, setInputDateType] = useState("date");
-
     const [options] = useState(defaultOptions);
-    const [chartType, setChartType] = useState<string>("line");
+    const [chartType, setChartType] = useState<string>("bar");
+
+    useEffect(() => {
+      chartRef.current.config.type = chartType;
+    }, [chartType]);
 
     useEffect(() => {
       updateChart();
@@ -144,7 +145,7 @@ const PowerChart = () => {
         },
       })
       .then(response => {
-          setChartData(DataToChartMapper.arrToTodayData(response.data));
+          setChartData(DataToChartMapper.arrToTodayData(response.data, periodicity));
       })
       ;
     };
@@ -195,7 +196,8 @@ const PowerChart = () => {
           </select>
         </span>
       </div>
-      <ChartContainer options={options} data={chartData} type={chartType as any} />
+
+      <Chart ref={chartRef} options={options} data={chartData} type={chartType as any} />
 
     </div>);
 };

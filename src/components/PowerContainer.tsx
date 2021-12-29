@@ -39,10 +39,10 @@ const PowerContainer = ({initialVal}) => {
         <div>
             Power Comsumed: {solarData.power_consumption + " W"}
         </div>
-        <div hidden={solarData.grid_consumption===0}>
+        <div hidden={solarData.grid_consumption === 0}>
             Grid consumed: {solarData.grid_consumption + " W"}
         </div>
-        <div hidden={solarData.grid_injection===0}>
+        <div hidden={solarData.grid_injection === 0}>
             Grid injection: {solarData.grid_injection + " W"}
         </div>
         <div>

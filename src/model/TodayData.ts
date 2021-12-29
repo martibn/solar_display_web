@@ -5,6 +5,7 @@ interface Dataset {
     borderColor: string;
     hidden?: boolean;
     pointRadius: number;
+    stack?: string;
 }
 
 export interface TodayData {
