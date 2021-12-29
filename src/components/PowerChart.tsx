@@ -3,7 +3,7 @@ import { BarController, BarElement, CategoryScale, Chart as ChartJS, Legend, Lin
 import { SolarData } from 'model/SolarData';
 import { TodayData } from 'model/TodayData';
 import React, { useEffect, useRef, useState } from "react";
-import { Bar, Chart } from 'react-chartjs-2';
+import { Chart } from 'react-chartjs-2';
 import DataToChartMapper from "../mapper/DataToChartMapper";
 
 
@@ -26,16 +26,7 @@ export const defaultOptions = {
           mode: 'index' as const,
           intersect: false
         }
-    },
-    scales: {
-      xAxes: [{
-        stacked: true
-      }],
-      yAxes: [{
-        stacked: true,
-      }]
     }
-    
 };
 
 export const defaultChartData: TodayData = {
@@ -58,30 +49,30 @@ export const defaultChartData: TodayData = {
       stack: 'a'
     },
     {
-      label: 'Grid Consumed',
+      label: 'Grid Injected',
       data: [],
       borderColor: 'rgb(255, 155, 0)',
       backgroundColor: 'rgba(255, 155, 0, 0.5)',
-      pointRadius: 0,
       hidden: true,
+      pointRadius: 0,
       stack: 'b'
     },
     {
-      label: 'Grid Injected',
+      label: 'Grid Consumed',
       data: [],
       borderColor: 'rgb(99, 255, 99)',
       backgroundColor: 'rgba(99, 255, 99, 0.5)',
-      pointRadius: 0,
       hidden: true,
+      pointRadius: 0,
       stack: 'b'
-    }
+    },
   ],
 }
 
 const PowerChart = () => {
     ChartJS.register(CategoryScale,LinearScale,PointElement,LineElement,Title,Tooltip,Legend, BarElement, BarController);
     
-    const [chartData, setChartData] = useState<any>(defaultChartData);
+    const [chartData, setChartData] = useState<TodayData>(defaultChartData);
 
     const intervl = useRef(null);
     const chartRef = useRef<any>();
@@ -95,6 +86,7 @@ const PowerChart = () => {
 
     useEffect(() => {
       chartRef.current.config.type = chartType;
+
     }, [chartType]);
 
     useEffect(() => {
@@ -145,7 +137,7 @@ const PowerChart = () => {
         },
       })
       .then(response => {
-          setChartData(DataToChartMapper.arrToTodayData(response.data, periodicity));
+          setChartData(DataToChartMapper.arrToTodayData(response.data, periodicity, chartType));
       })
       ;
     };
