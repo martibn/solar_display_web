@@ -1,5 +1,5 @@
 export interface SolarData {
-    timestamp: Date;
+    time: Date;
     
     power_generated?: number;
     

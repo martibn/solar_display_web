@@ -109,21 +109,21 @@ const PowerChart = () => {
           break;
 
         case "day":
-          URL+="day_summary";
+          URL+="day";
           options.plugins.title.text = 'Power Chart (Wh)';
           setInputDateType("date");
           setChartType("bar");
           break;
 
         case "month":
-          URL+="month_summary";
+          URL+="month";
           options.plugins.title.text = 'Power Chart (Wh)';
           setInputDateType("month");
           setChartType("bar");
           break;
 
         case "year":
-          URL+="year_summary";
+          URL+="year";
           options.plugins.title.text = 'Power Chart (Wh)';
           setInputDateType("month");
           setChartType("bar");
@@ -131,7 +131,7 @@ const PowerChart = () => {
       }
 
       axios
-      .get<SolarData[]>(URL + "?start=" + startDate.getTime() + "&end=" + endDate.getTime(), {
+      .get<SolarData[]>(URL + "?start=" + startDate.toISOString() + "&end=" + endDate.toISOString(), {
         headers: {
           "Content-Type": "application/json"
         },

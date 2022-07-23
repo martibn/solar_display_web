@@ -63,7 +63,7 @@ export default class DataToChartMapper{
           vals.datasets[2].data.push(element.grid_injection);
           vals.datasets[3].data.push(periodicity === "hour" ? element.grid_consumption : -Math.abs(element.grid_consumption));
           
-          const date = new Date(element.timestamp);
+          const date = new Date(element.time);
           let opts = {};
           if(periodicity === "month"){
             opts = {month: "numeric", year: "numeric"};
